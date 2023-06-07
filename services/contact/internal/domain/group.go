@@ -8,6 +8,7 @@ import (
 type Group struct {
 	Id   int
 	Name string
+	Contacts []Contact
 }
 
 func NewGroup(name string) (*Group, error) {

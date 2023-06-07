@@ -1,19 +1,18 @@
 package main
 
 import (
-	"ass_3/pkg/store/postgres"
+	"ass_4/pkg/store/postgres"
+	"ass_4/services/contact/internal"
+	"ass_4/services/contact/internal/repository"
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 
 	"github.com/joho/godotenv"
 )
 
-// type application struct {
-// }
-
 func main() {
-
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal(err)
@@ -29,4 +28,13 @@ func main() {
 	}
 	defer db.Close()
 
+	repo := repository.NewRepository()
+
+	useCase := internal.NewUseCase(repo)
+
+	delivery := internal.NewDelivery(useCase, repo)
+
+	fmt.Println(delivery)
+
+	log.Fatal(http.ListenAndServe(":8080", nil))
 }
